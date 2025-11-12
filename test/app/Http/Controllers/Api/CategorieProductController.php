@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CategorieProductController extends Controller
 {
-    //
+    //Menampilkan
     public function index(){
         $categorie_product = Categorie_product::all();
         return response()->json([
@@ -24,6 +24,7 @@ class CategorieProductController extends Controller
         }
     }
 
+    // Menyimpan
     public function store(Request $request){
         $validateData = $request->validate([
             'name' => 'required|max:255',
@@ -36,6 +37,7 @@ class CategorieProductController extends Controller
     }
 
 
+    // Mencari data dulu
     public function show($id){
         // cari di database berdasarkan Modelnya
         $categorie_product = Categorie_product::find($id);
@@ -46,7 +48,7 @@ class CategorieProductController extends Controller
         return response()->json($categorie_product);
     }
 
-
+    //Mengedit 
     public function update(Request $request,$id){
         $categorie_product = Categorie_product::find($id);
         // validasi
@@ -74,6 +76,7 @@ class CategorieProductController extends Controller
         ],201);
     }
 
+    // Menghapus
     public function destroy($id){
         $categorie_product = Categorie_product::find($id);
 
