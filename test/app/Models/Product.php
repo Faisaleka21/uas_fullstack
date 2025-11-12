@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     //
-    protected $guarded = ('id');
+    protected $guarded = ['id'];
 
     public function Categorie_product(){
         return $this->hasMany(related: Categorie_product::class);

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Categorie_product extends Model
 {
     //
-    protected $guarded = ('id');
+    protected $guarded = ['id'];
 
     public function product()
     {
