@@ -9,7 +9,8 @@ class Product extends Model
     //
     protected $guarded = ['id'];
 
-    public function Categorie_product(){
-        return $this->hasMany(related: Categorie_product::class);
+    public function categorie_product()
+    {
+        return $this->belongsTo(related: CategorieProduct::class, foreignKey:'product_category_id');
     }
 }
