@@ -14,12 +14,12 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        $author=Author::findOrFail(5);
+        // $author=Author::findOrFail(5); //mengedit
         //
         Book::create([
         'title' => 'PLagiat',
-        'author' => $author->name,
-        'author_id' => 5,
+        'author' => 'okokok',
+        'author_id' => 1,
         'published_year' => 2001,
         ]);
     }

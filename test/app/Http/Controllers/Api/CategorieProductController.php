@@ -15,7 +15,7 @@ class CategorieProductController extends Controller
         try{
             $categorie_product = CategorieProduct::all();
             return response()->json([
-                'message'=>'Ditampilkan',
+                'message'=>'Dita mpilkan',
                 'data'=>$categorie_product 
             ],201);
        

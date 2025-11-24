@@ -16,7 +16,10 @@ class ProductVariantController extends Controller
         //
         try{
             $variant = ProductVariant::with('product')->get();
-            return response()->json($variant);
+            return response()->json([
+                'type'=>'Succes',
+                'data'=>$variant
+            ],201);
 
         } catch(\Exception $e){
             return response()->json([
@@ -32,7 +35,15 @@ class ProductVariantController extends Controller
      */
     public function create(Request $request)
     {
-        // 
+        
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+       // 
         try{
             $validate = $request->validate([
                 "variant_product_id"=>'required|exists:products,id',
@@ -41,7 +52,7 @@ class ProductVariantController extends Controller
                 'stock'=>'required',
             ]);
             $variant = ProductVariant::create($validate);
-            $variant->load('product');
+            $variant->load('product'); 
             return response()->json([
                 'type'=>'succes',
                 'data'=>$variant,
@@ -55,20 +66,6 @@ class ProductVariantController extends Controller
                 'data'=>null
             ],501);
         }
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-        try{
-
-        } catch(\Exception $e){
-            
-        }
     }
 
     /**
@@ -78,9 +75,18 @@ class ProductVariantController extends Controller
     {
         //
         try{
+            $variant=ProductVariant::with('product')->findOrFail($id);
+            return response()->json([
+                'type'=>'Succes',
+                'data'=>$variant,
+            ],201);
 
         } catch(\Exception $e){
-            
+            return response()->json([
+                'type'=>'Error/Gagal',
+                'message'=>$e->getMessage(),
+                'data'=>null
+            ],501);
         }
     }
 
@@ -99,9 +105,33 @@ class ProductVariantController extends Controller
     {
         //
         try{
+            $variant = ProductVariant::findOrFail($id);
+            $validate = $request->validate([
+                "variant_product_id"=>'required|exists:products,id',
+                'name'=>'required',
+                'price'=>'required',
+                'stock'=>'required',
+            ]);
+            $variant->load('product');
+            $variant->update([
+                'variant_product_id'=>$validate['variant_product_id'],
+                'name'=>$validate['name'],
+                'price'=>$validate['price'],
+                'stock'=>$validate['stock']
+            ]);
+            return response()->json([
+                'type'=>'Succes',
+                'data'=>$variant,
+                'message'=>'Berhasil diubah'
+            ],201);
+            
 
         } catch(\Exception $e){
-            
+            return response()->json([
+                'type'=>'Error/Gagal',
+                'message'=>$e->getMessage(),
+                'data'=>null
+            ],501);
         }
     }
 
@@ -112,9 +142,20 @@ class ProductVariantController extends Controller
     {
         //
         try{
+            $variant = ProductVariant::findOrFail($id);
+            $variant->delete();
+            return response()->json([
+                'type'=>'succes',
+                'data'=>$variant,
+                'message'=>'Berhasil dihapus'
+            ],201);
 
         } catch(\Exception $e){
-            
+            return response()->json([
+                'type'=>'Error/Gagal',
+                'message'=>$e->getMessage(),
+                'data'=>null
+            ],501);
         }
     }
 
