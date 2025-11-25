@@ -12,7 +12,7 @@ class ProductController extends Controller
     //
     public function index(){
         try{
-            $products = Product::with('categorie_product')->get();
+            $products = Product::with('categorie_product','product_variant')->get();  //ini mengambil relasi ke category_product dulu. yg product variant itu dipisahkan
             return response()->json([
                 'type'=>'Succes',
                 'data'=>$products,

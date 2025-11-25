@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategorieProduct;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,11 +15,11 @@ class CategorieProductController extends Controller
     public function index(){
 
         try{
-            $categorie_product = CategorieProduct::all();
+            $categories = CategorieProduct::with('product.product_variant')->get(); //ini menyelam lagi yg hasMany lah sampai yg terakhir atau mentok. dari product 
             return response()->json([
-                'message'=>'Dita mpilkan',
-                'data'=>$categorie_product 
-            ],201);
+                'message' => 'Ditampilkan',
+                'data' => $categories
+            ], 200);
        
         } catch(\Exception $e){
             return response()->json([
@@ -35,6 +37,7 @@ class CategorieProductController extends Controller
             'description' => 'nullable|string',
             ]);
             $categorie_product = CategorieProduct::create($validateData);
+
             return response()->json([
                 "message" => "Berhasil Ditambahkan",
                 "data" => $categorie_product
@@ -52,6 +55,7 @@ class CategorieProductController extends Controller
 
     // Mencari data dulu
     public function show($id){
+        try{
             // cari di database berdasarkan Modelnya
             $categorie_product = CategorieProduct::find($id); 
             return response()->json($categorie_product);
@@ -61,6 +65,13 @@ class CategorieProductController extends Controller
                     'message'=>'Data tidak ditemukan'],401);
             }
 
+
+        } catch(\Exception $e){
+            return response()->json([
+                'message'=>$e->getMessage(),
+                'data'=>null
+            ],501);
+        }
     }
 
     //Mengedit 

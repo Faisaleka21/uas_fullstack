@@ -12,6 +12,10 @@ class CategorieProduct extends Model
 
     public function product()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class,'product_category_id');
     }
+    // public function product_variant()
+    // {
+    //     return $this->hasMany(ProductVariant::class,'variant_product_id');
+    // }
 }

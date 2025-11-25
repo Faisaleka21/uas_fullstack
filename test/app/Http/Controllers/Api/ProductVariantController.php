@@ -15,7 +15,7 @@ class ProductVariantController extends Controller
     {
         //
         try{
-            $variant = ProductVariant::with('product')->get();
+            $variant = ProductVariant::with('product.categorie_product')->get(); //ini mengambil dari induknya kemudian menyelam lagi ambil dari induknya jg, pooko anak terakhir ambil yg belongsTo
             return response()->json([
                 'type'=>'Succes',
                 'data'=>$variant
