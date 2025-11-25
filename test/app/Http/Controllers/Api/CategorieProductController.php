@@ -19,9 +19,7 @@ class CategorieProductController extends Controller
             return response()->json([
                 'message' => 'Ditampilkan',
                 'data' => $categories
-            ], 200);
-       
-        } catch(\Exception $e){
+            ], 200);       } catch(\Exception $e){
             return response()->json([
                 'message'=>$e->getMessage(),
                     'data'=>null
