@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\CategorieProduct;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use Exception;
+use Illuminate\Http\Request;
+
+class CategorieProductController extends Controller
+{
+    //Menampilkan
+    public function index()
+    {
+
+        try {
+            $categories = CategorieProduct::with('product.product_variant')->get(); //ini menyelam lagi yg hasMany lah sampai yg terakhir atau mentok. dari product 
+            return response()->json([
+                'message' => 'Ditampilkan',
+                'data' => $categories
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 501);
+        }
+    }
+
+    // Menyimpan
+    public function store(Request $request)
+    {
+        try {
+            $validateData = $request->validate([
+                'name' => 'required|max:255',
+                'description' => 'nullable|string',
+            ]);
+            $categorie_product = CategorieProduct::create($validateData);
+
+            return response()->json([
+                "message" => "Berhasil Ditambahkan",
+                "data" => $categorie_product
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 501);
+        }
+    }
+
+
+    // Mencari data dulu
+    public function show($id)
+    {
+        try {
+            // cari di database berdasarkan Modelnya
+            $categorie_product = CategorieProduct::find($id);
+            return response()->json($categorie_product);
+
+            if (!$categorie_product) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan'
+                ], 401);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 501);
+        }
+    }
+
+    //Mengedit 
+    public function update(Request $request, $id)
+    {
+        try {
+            $categorie_product = CategorieProduct::find($id);
+            // validasi
+            $validate = $request->validate([
+                'name' => 'required|max:255',
+                'description' => 'nullable|string',
+            ]);
+            $categorie_product->update([
+                'name' => $validate['name'],
+                'description' => $validate['description']
+            ]);
+
+            return response()->json([
+                'type' => 'Succes',
+                'data' => $categorie_product,
+                'message' => 'Berhasil diubah',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => null,
+            ]);
+        }
+    }
+
+    // Menghapus
+    public function destroy($id)
+    {
+        try {
+            $categorie_product = CategorieProduct::find($id);
+            $categorie_product->delete();
+
+            return response()->json([
+                'status' => 'Succes',
+                'data' => $categorie_product,
+                'message' => 'Data Berhasil Dihapus!!!',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(''),
+                'data' => null,
+            ], 401);
+        }
+    }
+}
